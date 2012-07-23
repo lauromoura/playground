@@ -6,11 +6,8 @@
 
 #include <xcb/xcb.h>
 
-int main(int argc, char const *argv[])
-{
 
-	// EGL base initialization
-
+EGLDisplay initEGL() {
 	EGLint majorVersion;
 	EGLint minorVersion;
 	EGLDisplay display;
@@ -19,50 +16,54 @@ int main(int argc, char const *argv[])
 
 	if (display == EGL_NO_DISPLAY) {
 		std::cout << "Can't get display." << std::endl;
-		return 1;
+		return 0;
 	}
 
 	if(!eglInitialize(display, &majorVersion, &minorVersion)) {
 		std::cout << "Can't initialize display." << std::endl;
-		return 1;
+		return 0;
 	}
 
-	std::cout << "EGL version: " << majorVersion << "." << minorVersion << std::endl;
+	return display;
+}
 
+EGLConfig getEGLConfig(EGLDisplay display)
+{
 	EGLint numConfigs = 0;
 	const EGLint maxConfigs = 10;
 	EGLConfig configs[10];
 
 	EGLint attribList[] = 
 	{
-		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT | EGL_WINDOW_BIT,
 		EGL_RED_SIZE, 8,
 		EGL_GREEN_SIZE, 8,
 		EGL_BLUE_SIZE, 8,
-		EGL_DEPTH_SIZE, 1,
+		EGL_DEPTH_SIZE, 24,
 		EGL_NONE
 	};
 
 	if (!eglChooseConfig(display, attribList, configs, maxConfigs, &numConfigs)) {
 		std::cout << "Can't get number of configs." << std::endl;
-		return 1;	
+		return NULL;
 	} else {
 		std::cout << "Configs: " << numConfigs << std::endl;
 	}
 
+	return configs[0];
+}
+
+xcb_drawable_t init_xcb(xcb_connection_t *connection)
+{
 	// XCB stuff
 	// Copied from http://rosettacode.org/wiki/Window_creation/X11
-	xcb_connection_t *connection;
 	xcb_screen_t *screen;
 	xcb_drawable_t native_window;
 	xcb_gcontext_t foreground;
 	xcb_gcontext_t background;
-	xcb_generic_event_t *e;
 
 	uint32_t mask = 0;
 	uint32_t values[2];
-
-	connection = xcb_connect(NULL, NULL);
 
 	screen = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
 	native_window = screen->root; //temporarily assing to setup the contexts
@@ -99,8 +100,10 @@ int main(int argc, char const *argv[])
 	xcb_map_window(connection, native_window);
 	xcb_flush(connection);
 
-	// EGL Surface. In this case, a visible window
+	return native_window;
+}
 
+EGLSurface createEGLWindow(EGLDisplay display, EGLConfig config, EGLNativeWindowType native_window) {
 	EGLSurface window;
 	EGLint windowAttribList[] =
 	{
@@ -108,7 +111,7 @@ int main(int argc, char const *argv[])
 		EGL_NONE
 	};
 
-	window = eglCreateWindowSurface(display, configs[0], native_window, windowAttribList);
+	window = eglCreateWindowSurface(display, config, native_window, windowAttribList);
 
 	if (window == EGL_NO_SURFACE) {
 		switch (eglGetError()) {
@@ -125,12 +128,50 @@ int main(int argc, char const *argv[])
 				std::cerr << "Bad Alloc!" << std::endl;
 				break;
 		}
-		return 1;
+		return NULL;
 	}
 
+}
+
+EGLContext createEGLContext(EGLDisplay display, EGLConfig config) {
+	EGLContext context;
+
+	const EGLint contextAttribList[] = {
+		EGL_CONTEXT_CLIENT_VERSION, 2,
+		EGL_NONE
+	};
+
+	context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribList);
+
+	if (context == EGL_NO_CONTEXT) {
+		EGLint error = eglGetError();
+
+		if (error == EGL_BAD_CONFIG) {
+			std::cerr << "Bad config for context!" << std::endl;
+		}
+	}
+
+	return context;
+}
+
+int main(int argc, char const *argv[])
+{
+
+	EGLDisplay display = initEGL();
+
+	EGLConfig config = getEGLConfig(display);
+
+	xcb_connection_t *connection = xcb_connect(NULL, NULL);
+	xcb_drawable_t native_window = init_xcb(connection);
+
+	EGLSurface window = createEGLWindow(display, config, native_window);
+
+	EGLContext context = createEGLContext(display, config);
+	eglMakeCurrent(display, window, window, context);
 
 
 	// Simple XCB Event loop;
+	xcb_generic_event_t *e;
 	while ((e = xcb_wait_for_event(connection))) {
 		switch (e->response_type & ~0x80) {
 			case XCB_KEY_PRESS:
