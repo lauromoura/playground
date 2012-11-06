@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="https://raw.github.com/HPNeo/gmaps/master/gmaps.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/HPNeo/gmaps/master/gmaps.js"></script>
+    <script type="text/javascript">
+        var map;
+        $(document).ready(function () {
+            map = new GMaps({
+                div: "#map",
+                lat: 0,
+                lng: 0
+            });
+
+            GMaps.geolocate({
+                success: function (position) {
+                    console.log("Setting position");
+                    console.log(map);
+                    map.setCenter(position.coords.latitude,
+                                  position.coords.longitude);
+                    console.log("Set position");
+                },
+                error: function (error) {
+                    alert('Geolocation failed: '+error.message);
+                },
+                not_supported: function () {
+                    alert("Your browser does not support geolocation.");
+                }
+            });
+
+            function handleGPXData (evt) {
+                var data = evt.target.result;
+                var parser = new DOMParser();
+
+                var doc = parser.parseFromString(data, "application/xml");
+
+                var trk = doc.getElementsByTagName("trk")[0];
+                var trkseg = trk.getElementsByTagName("trkseg")[0];
+
+                var points = trkseg.childNodes;
+
+                console.log(points);
+
+                for (var i = 0; i < points.length; i++) {
+                    var point = points[i];
+                    console.log(point.getAttribute("lat"));
+                };
+
+                console.log(trk);
+            }
+
+            // File handling
+            function handleSelectedFile (evt) {
+                file = evt.target.files[0];
+
+                var reader = new FileReader();
+
+                reader.onload = handleGPXData;
+
+                reader.readAsText(file);
+
+            }
+
+            document.getElementById('gpxFile').addEventListener('change', handleSelectedFile, false);
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <input type="file" id="gpxFile" name="filename"/>
+        <output id="list"></output>
+    </div>
+    <div id="map" style="width:640px; height:480px"></div>
+</body>
+</html>
