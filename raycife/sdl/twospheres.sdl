@@ -1,0 +1,20 @@
+eye 0.0 0.0 5.0
+size 200 200
+ortho -1 -1 1 1
+ambient 0.2
+# light definition
+# x y z  intensity
+light 0.0 1.0 1.0 1.0
+light 1.0 0.0 1.0 1.0
+#object definition
+# a b c d e f g h j k red green blue Ka Kd Ks n
+# red sphere at x=0, y=0, z=-10 radius=1
+#
+object 1.0 1.0 1.0 0.0 0.0 0.0 0.0 0.0 10.0 99.0 1.0 0.0 0.0 0.1 0.5 0.6 5 0 0 1
+#
+object 1.0 1.0 1.0 0.0 0.0 0.0 5.0 5.0 30.0 949.0 0.0 0.0 1.0 0.1 0.5 0.4 4 0 0 1
+#
+# background color
+background 0.0 0.0 0.0
+profundidade 0
+output twospheres.pnm
