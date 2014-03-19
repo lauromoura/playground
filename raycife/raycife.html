@@ -4,33 +4,35 @@
 	<meta charset="UTF-8">
 	<title>Raytracer</title>
 	<script src="vector.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.0.js"></script>
 	<script type="text/javascript">
 		function renderFromText() {
 			console.log("Will render from the text area.");
 			var canvas = document.getElementById("drawingArea");
 			var context = canvas.getContext("2d");
 		}
-	</script>
-</head>
-<body>
-	<input type="file" id="file" name="files" />
-	<output id="list"></output>
 
-	<script type="text/javascript">
 		function handleFileSelect(evt) {
 			var file = evt.target.files[0];
-			document.getElementById("list").innerHTML = "Loading: " + escape(file.name);
+			$("#list").html("Loading: " + escape(file.name));
 			var reader = new FileReader();
 			reader.onload = (function (theFile) {
 				return function(e) {
-					document.getElementById("sdl").value = e.target.result;
+					$("#sdl").val(e.target.result);
 				};
 			})(file);
 
 			reader.readAsText(file);
 		}
-		document.getElementById('file').addEventListener('change', handleFileSelect, false);
+
+		$(document).ready(function(){
+			$('#fileInput').change(handleFileSelect);
+		});
 	</script>
+</head>
+<body>
+	<input type="file" id="fileInput" name="files" />
+	<output id="list"></output>
 
 	<textarea id="sdl" rows="25" cols="80">
 	</textarea>
