@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Raytracer</title>
+	<script src="vector.js"></script>
+	<script type="text/javascript">
+		function renderFromText() {
+			console.log("Will render from the text area.");
+			var canvas = document.getElementById("drawingArea");
+			var context = canvas.getContext("2d");
+		}
+	</script>
+</head>
+<body>
+	<input type="file" id="file" name="files" />
+	<output id="list"></output>
+
+	<script type="text/javascript">
+		function handleFileSelect(evt) {
+			var file = evt.target.files[0];
+			document.getElementById("list").innerHTML = "Loading: " + escape(file.name);
+			var reader = new FileReader();
+			reader.onload = (function (theFile) {
+				return function(e) {
+					document.getElementById("sdl").value = e.target.result;
+				};
+			})(file);
+
+			reader.readAsText(file);
+		}
+		document.getElementById('file').addEventListener('change', handleFileSelect, false);
+	</script>
+
+	<textarea id="sdl" rows="25" cols="80">
+	</textarea>
+	<br>
+	<button onclick="renderFromText()">
+		Render
+	</button>
+	<br>
+	<canvas id="drawingArea" style="border-style:solid">
+	</canvas>
+</body>
+</html>
