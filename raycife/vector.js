@@ -35,3 +35,8 @@ Vector.prototype.add = function(other) {
 Vector.prototype.sub = function(other) {
 	return this.operate(function(a,b) { return a-b;}, other);
 };
+
+Vector.prototype.normalize = function() {
+	var length = this.magnitude();
+	return new Vector(this.x/length, this.y/length, this.z/length);
+};
