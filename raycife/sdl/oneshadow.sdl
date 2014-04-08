@@ -1,0 +1,23 @@
+eye 0.0 0.5 3.5
+size 200 200
+ortho -1 -1 1 1
+ambient 0.3
+supersample off
+# light definition
+# x y z  intensity
+light 0.0 1.0 1.0 1.0
+# object definition
+# a b c d e f g h j k red green blue Ka Kd Ks n
+# red sphere at x=0, y=0, z=-10 radius=1
+#
+object 1.0 1.0 1.0 0.0 0.0 0.0 0.0 0.0 10.0 99.0 1.0 0.0 0.0 0.1 0.5 0.6 5 0 0 1
+#
+#plane 1
+#object 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 30.0 0.3 0.3 0.3 0.1 0.5 0.0 5 0 0 1
+#plane 2
+object 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 5.0 0.0 0.0 1.0 0.1 0.5 0.0 5 0 0 1
+#
+# background color
+background 0.5 0.5 0.5
+profundidade 0
+output oneshadow.pnm

@@ -1,6 +1,5 @@
 # Chapter 2, sorts and linear searches
 
-
 import sys
 import random
 from datetime import datetime
@@ -90,7 +89,6 @@ def main(argv=None):
             assert(sorted_list == data)
 
             print "Filename: %s - Size: %s - function: %s - duration: %s" % (filename, size, function.__name__, end_time - start_time)
-
 
 if __name__ == '__main__':
     main()
