@@ -1,0 +1,12 @@
+Name Rating
+Espectros 1500
+Mariners 1500
+Pirates 1500
+Bravos 1500
+Bulls 1500
+Cacadores 1500
+Fenix 1500
+Petroleiros 1500
+Scorpions 1500
+Cangaceiros 1500
+Dragoes 1500

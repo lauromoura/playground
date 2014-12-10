@@ -1,0 +1,25 @@
+AwayTeam HomeTeam AwayScore HomeScore
+#Mariners Espectros
+#Cangaceiros Dragoes
+#Scorpions Bulls
+#Bravos AllSaints
+#Pirates Espectros
+#Bulls Cangaceiros
+#Marechais Bravos
+#Pirates Mariners
+#Scorpions Dragoes
+#AllSaints Marechais
+#Espectros Pirates
+#Marechais AllSaints
+#Cangaceiros Scorpions
+#Espectros Mariners
+#Dragons Bulls
+#AllSaints Bravos
+#Mariners Pirates
+#Bulls Scorpions
+#Dragoes Cangaceiros
+#Bravos Marechais
+# Playoffs
+Bravos Bulls 9 50
+Dragoes Espectros 0 20
+Bulls Espectros 14 28

@@ -1,0 +1,18 @@
+AwayTeam HomeTeam AwayScore HomeScore IgnoreHome
+Mariners Pirates 9 0 NA
+Bulls Scorpions 34 3 NA
+Pirates Espectros 6 44 NA
+Cangaceiros Scorpions 3 6 NA
+Espectros Mariners 7 2 NA
+Bulls Dragoes 22 26 NA
+Cangaceiros Bulls 21 22 NA
+Scorpions Dragoes 21 13 NA
+Pirates Mariners 0 21 NA
+Espectros Pirates 43 00 NA
+Dragoes Bulls 16 12 NA
+Mariners Espectros 7 34 NA
+Scorpions Cangaceiros 31 26 NA
+# Playoff NA
+Dragoes Espectros 0 21 NA
+Mariners Scorpions 20 12 NA
+Mariners Espectros 2 34 TRUE
