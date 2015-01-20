@@ -1,6 +1,6 @@
 source("elo.R")
 
-teams <- read.table("teams.txt", header=TRUE, stringsAsFactors=FALSE)
+teams <- read.table("teamsPE2015.txt", header=TRUE, stringsAsFactors=FALSE)
 
 loadSeason <- function(filename, teams) {
 	print(filename)
@@ -23,6 +23,6 @@ loadSeason <- function(filename, teams) {
 	}
 }
 
-teams <- loadSeason("linefa2011.txt", teams)
+teams <- loadSeason("PE2015.txt", teams)
 # teams <- loadSeason("linefa2012.txt", teams)
 # teams <- loadSeason("linefa2014.txt", teams)
