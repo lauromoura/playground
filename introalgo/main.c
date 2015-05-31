@@ -2,12 +2,19 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "numgen.h"
 #include "sorting.h"
+
+static int _compare_int(const void *a, const void *b)
+{
+    return (*(int*)a - *(int*)b);
+}
 
 void assert_sorted(int data[], const int len)
 {
     int i;
+    int *copy = NULL;
 
     if (len == 0)
         return;
@@ -16,11 +23,21 @@ void assert_sorted(int data[], const int len)
         perror("Invalid array length");
         abort();
     }
-        
 
-    for (i = 0; i < len - 1; i++) {
-        assert (data[i] < data[i+1]);
+    copy = malloc(sizeof(int)*len);
+
+    if (!copy) {
+        perror("Failed to allocate memory.");
+        abort();
     }
+
+    memcpy(data, copy, sizeof(int)*len);
+
+    qsort(copy, len, sizeof(int), _compare_int);
+
+    assert (memcmp(data, copy, sizeof(int)*len) == 0);
+
+    free(copy);
 }
 
 /* FIXME Currently unused. */
