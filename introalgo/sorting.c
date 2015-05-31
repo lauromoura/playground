@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <time.h>
+#include "numgen.h"
 
 void insertion_sort(int data[], const int len)
 {
@@ -68,36 +69,38 @@ int* load_data_prefix_num(const char* prefix, const int num)
     return data;
 }
 
-void run_test(const char* prefix, const int num)
+void run_test(int *data, const int num)
 {
-    int *data = NULL;
-    data = load_data_prefix_num(prefix, num);
-
     if (!data) {
-        perror("Failed to load file.");
+        perror("Invalid data for test.");
         abort();
     }
+
     insertion_sort(data, num);
     assert_sorted(data, num);
-
-    free(data);
 }
 
 int main(int argc, char* argv[])
 {
-    int data[] = {4, 3, 2, 1};
     int *x = NULL;
-    int len = 4;
-    insertion_sort(data, len);
-    assert_sorted(data, len);
+    int len = 1000;
 
-    len = 1000;
+    srand(time(0));
+
     printf("Ordered test with %d numbers\n", len);
-    run_test("ordered", len);
+    x = ordered_data(len);
+    run_test(x, len);
+    free(x);
+
     printf("Random test with %d numbers\n", len);
-    run_test("random", len);
+    x = randomized_data(len);
+    run_test(x, len);
+    free(x);
+
     printf("Reversed test with %d numbers \n", len);
-    run_test("reverse", len);
-    
+    x = reversed_data(len);
+    run_test(x, len);
+    free(x);
+
     return 0;
 }

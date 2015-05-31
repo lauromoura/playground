@@ -1,11 +1,11 @@
 
 FLAGS=-pedantic-errors -std=c99
 
-all: sorting input
+all: sorting
 
 
-sorting: sorting.c
-	gcc -o sorting $(FLAGS) sorting.c
+sorting: sorting.c numgen.c numgen.h
+	gcc -o sorting $(FLAGS) numgen.c sorting.c
 
 input:
 	python generate_sequences.py 10
