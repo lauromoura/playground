@@ -58,13 +58,20 @@ int* load_data_prefix_num(const char* prefix, const int num)
 
 void run_test(int *data, const int num)
 {
+    clock_t start, diff;
+    int msec = 0;
     if (!data) {
         perror("Invalid data for test.");
         abort();
     }
 
+    start = clock();
     insertion_sort(data, num);
+    diff = clock() - start;
     assert_sorted(data, num);
+    
+    msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("Time taken: %d seconds %d milliseconds\n", msec/1000, msec%1000);
 }
 
 int main(int argc, char* argv[])
