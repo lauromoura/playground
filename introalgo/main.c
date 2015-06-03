@@ -5,6 +5,7 @@
 #include <string.h>
 #include "numgen.h"
 #include "sorting.h"
+#include "util.h"
 
 static int _compare_int(const void *a, const void *b)
 {
