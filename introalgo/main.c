@@ -74,22 +74,38 @@ int* load_data_prefix_num(const char* prefix, const int num)
     return data;
 }
 
-void run_test(int *data, const int num)
+void run_test_helper(int *data, const int num, void (*sort_function)(int*, const int))
 {
     clock_t start, diff;
     int msec = 0;
+    int *copy = NULL;
+
     if (!data) {
         perror("Invalid data for test.");
         abort();
     }
 
+    if ((copy = malloc(sizeof(int)*num)) == 0) {
+        perror("Failed to allocate memory.");
+        abort();
+    }
+
+    memcpy(copy, data, sizeof(int)*num);
+
     start = clock();
-    insertion_sort(data, num);
+    sort_function(copy, num);
     diff = clock() - start;
-    assert_sorted(data, num);
+    assert_sorted(copy, num);
     
     msec = diff * 1000 / CLOCKS_PER_SEC;
     printf("Time taken: %d seconds %d milliseconds\n", msec/1000, msec%1000);
+
+    free(copy);
+}
+
+void run_test(int *data, const int num)
+{
+    run_test_helper(data, num, insertion_sort);
 }
 
 int main(int argc, char* argv[])
