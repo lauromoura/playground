@@ -31,7 +31,7 @@ void assert_sorted(int data[], const int len)
         abort();
     }
 
-    memcpy(data, copy, sizeof(int)*len);
+    memcpy(copy, data, sizeof(int)*len);
 
     qsort(copy, len, sizeof(int), _compare_int);
 
