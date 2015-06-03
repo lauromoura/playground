@@ -1,4 +1,9 @@
 #include "sorting.h"
+#include "util.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 
 void insertion_sort(int data[], const int len)
 {
@@ -15,3 +20,69 @@ void insertion_sort(int data[], const int len)
     }
 }
 
+static void merge(int data[], const int len, const int mid)
+{
+    int *left = NULL;
+    int *right = NULL;
+    int left_pos = 0;
+    int right_pos = 0;
+    int left_len = mid;
+    int right_len = len - mid;
+    int next_pos = 0;
+
+    if ((left = malloc(sizeof(int) * left_len)) == 0) {
+        perror("Failed to allocate memory");
+        abort();
+    }
+    if ((right = malloc(sizeof(int) * right_len)) == 0) {
+        perror("Failed to allocate memory");
+        abort();
+    }
+
+    left = memcpy(left, data, sizeof(int) * left_len);
+    right = memcpy(right, data + mid, sizeof(int) * right_len);
+
+    // Could have used MAX_INT as end of array flag, but it is also inside the
+    // rand() return interval.
+    while (left_pos < left_len || right_pos < right_len) {
+        if (right_pos >= right_len) {
+            // Empty right stack
+            data[next_pos] = left[left_pos];
+            left_pos++;
+        } else if (left_pos >= left_len) {
+            // Empty left stack
+            data[next_pos] = right[right_pos];
+            right_pos++;
+        } else {
+            // Both with itens
+            if (left[left_pos] <= right[right_pos]) {
+                data[next_pos] = left[left_pos];
+                left_pos++;
+            } else {
+                data[next_pos] = right[right_pos];
+                right_pos++;
+            }
+        }
+        next_pos++;
+    }
+
+    if (left)
+        free(left);
+    if (right)
+        free(right);
+}
+
+void merge_sort(int data[], const int len)
+{
+    int left = 0;
+    int mid = 0;
+
+    if (len == 1)
+        return;
+
+    mid = len/2;
+
+    merge_sort(data, mid);
+    merge_sort(data + mid, len - mid);
+    merge(data, len, mid);
+}

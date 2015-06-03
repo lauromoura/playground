@@ -106,6 +106,7 @@ void run_test_helper(int *data, const int num, void (*sort_function)(int*, const
 void run_test(int *data, const int num)
 {
     run_test_helper(data, num, insertion_sort);
+    run_test_helper(data, num, merge_sort);
 }
 
 int main(int argc, char* argv[])
