@@ -28,7 +28,7 @@ static void merge(int data[], const int len, const int mid)
     int right_pos = 0;
     int left_len = mid;
     int right_len = len - mid;
-    int next_pos = 0;
+    int i = 0;
 
     if ((left = malloc(sizeof(int) * left_len)) == 0) {
         perror("Failed to allocate memory");
@@ -44,26 +44,20 @@ static void merge(int data[], const int len, const int mid)
 
     // Could have used MAX_INT as end of array flag, but it is also inside the
     // rand() return interval.
-    while (left_pos < left_len || right_pos < right_len) {
+    for (i = 0; i < len; i++ ) {
         if (right_pos >= right_len) {
             // Empty right stack
-            data[next_pos] = left[left_pos];
-            left_pos++;
+            data[i] = left[left_pos++];
         } else if (left_pos >= left_len) {
             // Empty left stack
-            data[next_pos] = right[right_pos];
-            right_pos++;
+            data[i] = right[right_pos++];
         } else {
             // Both with itens
-            if (left[left_pos] <= right[right_pos]) {
-                data[next_pos] = left[left_pos];
-                left_pos++;
-            } else {
-                data[next_pos] = right[right_pos];
-                right_pos++;
-            }
+            if (left[left_pos] <= right[right_pos])
+                data[i] = left[left_pos++];
+            else
+                data[i] = right[right_pos++];
         }
-        next_pos++;
     }
 
     if (left)
