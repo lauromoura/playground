@@ -20,6 +20,34 @@ void insertion_sort(int data[], const int len)
     }
 }
 
+void insert_first_sorted(int data[], int len)
+{
+    int value = 0;
+    int i = 0;
+
+    if (len == 0 || len == 1)
+        return;
+
+    for (i = 0; i < len - 1; i++) {
+        int tmp;
+        if (data[i] <= data[i+1])
+            break;
+
+        tmp = data[i+1];
+        data[i+1] = data[i];
+        data[i] = tmp;
+    }
+}
+
+void insertion_sort_recursive(int data[], int len)
+{
+    if (len == 0)
+        return;
+
+    insertion_sort_recursive(data+1, len-1);
+    insert_first_sorted(data, len);
+}
+
 static void merge(int data[], const int len, const int mid)
 {
     int *left = NULL;

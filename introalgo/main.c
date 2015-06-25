@@ -74,7 +74,7 @@ int* load_data_prefix_num(const char* prefix, const int num)
     return data;
 }
 
-void run_test_helper(int *data, const int num, void (*sort_function)(int*, const int))
+void run_test_helper(int *data, const int num, void (*sort_function)(int*, const int), const char* name)
 {
     clock_t start, diff;
     int msec = 0;
@@ -98,6 +98,7 @@ void run_test_helper(int *data, const int num, void (*sort_function)(int*, const
     assert_sorted(copy, num);
     
     msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("Test: %s\n", name);
     printf("Time taken: %d seconds %d milliseconds\n", msec/1000, msec%1000);
 
     free(copy);
@@ -105,14 +106,15 @@ void run_test_helper(int *data, const int num, void (*sort_function)(int*, const
 
 void run_test(int *data, const int num)
 {
-    run_test_helper(data, num, insertion_sort);
-    run_test_helper(data, num, merge_sort);
+    run_test_helper(data, num, insertion_sort, "Insertion Sort");
+    run_test_helper(data, num, insertion_sort_recursive, "Recursive Insertion Sort");
+    run_test_helper(data, num, merge_sort, "Merge Sort");
 }
 
 int main(int argc, char* argv[])
 {
     int *x = NULL;
-    int len = 1000;
+    int len = 10000;
 
     srand(time(0));
 
